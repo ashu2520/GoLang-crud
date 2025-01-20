@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "./";
+
+// User message structure
+message User {
+  int32 user_id = 1 [json_name = "user_id"];              // Unique identifier for the user
+  string user_name = 2 [json_name = "user_name"];        // Name of the user
+  string user_mobile = 3 [json_name = "user_mobile"];    // Mobile number of the user
+  string user_email = 4 [json_name = "user_email"];      // Email address of the user
+  string user_gender = 5 [json_name = "user_gender"];    // Gender of the user
+  string user_country = 6 [json_name = "user_country"];  // Country of the user
+  string user_state = 7 [json_name = "user_state"];      // State of the user
+  string user_status = 8 [json_name = "user_status"];    // Account status (e.g., active, inactive)
+  string user_password = 9 [json_name = "user_password"]; // Password for the user
+  string created_at = 10 [json_name = "created_at"];     // Timestamp of account creation
+  string updated_at = 11 [json_name = "updated_at"];     // Timestamp of last account update
+}
+
+// Request and Response messages
+message CreateUserRequest {
+  User user = 1 [json_name = "user"];                    // User details to create
+}
+
+message CreateUserResponse {
+  string message = 1 [json_name = "message"];            // Response message
+}
+
+message GetUsersRequest {
+  int32 limit = 1 [json_name = "limit"];                 // Number of users to retrieve
+  int32 offset = 2 [json_name = "offset"];               // Offset for pagination
+}
+
+message GetUsersResponse {
+  repeated User users = 1 [json_name = "users"];         // List of retrieved users
+}
+
+message UpdateUserRequest {
+  int32 user_id = 1 [json_name = "user_id"];             // ID of the user to update
+  optional string new_status = 2 [json_name = "new_status"]; // New status of the user (optional)
+  optional string new_email = 3 [json_name = "new_email"];   // New email of the user (optional)
+  optional string new_mobile = 4 [json_name = "new_mobile"]; // New mobile of the user (optional)
+}
+
+message UpdateUserResponse {
+  string message = 1 [json_name = "message"];            // Response message
+}
+
+message DeleteUserRequest {
+  int32 user_id = 1 [json_name = "user_id"];             // ID of the user to delete
+}
+
+message DeleteUserResponse {
+  string message = 1 [json_name = "message"];            // Response message
+}
+
+// Service definition
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse); // Create a new user
+  rpc GetUsers(GetUsersRequest) returns (GetUsersResponse);       // Retrieve a list of users
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse); // Update a user's details
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse); // Delete a user
+}
